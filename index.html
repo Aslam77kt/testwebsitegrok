@@ -11,7 +11,8 @@
       --background: #f5f7fa;
       --card-bg: #ffffff;
       --shadow: rgba(0, 0, 0, 0.1);
-      --transition: 0.3s ease;
+      --transition: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      --gradient: linear-gradient(45deg, var(--primary) 0%, #00aaff 100%);
     }
 
     [data-theme="dark"] {
@@ -29,12 +30,32 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background-color: var(--background);
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--background);
       color: var(--text);
-      line-height: 1.6;
+      line-height: 1.8;
       scroll-behavior: smooth;
       transition: background-color var(--transition), color var(--transition);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 70%);
+      opacity: 0.15;
+      z-index: -1;
+      animation: pulse 12s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.15; transform: scale(1); }
+      50% { opacity: 0.25; transform: scale(1.05); }
     }
 
     a {
@@ -53,24 +74,30 @@
       left: 0;
       right: 0;
       background: var(--card-bg);
-      padding: 1rem 2rem;
+      padding: 1.5rem 2rem;
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 2rem;
-      box-shadow: 0 2px 5px var(--shadow);
+      gap: 3rem;
+      box-shadow: 0 6px 20px var(--shadow);
       z-index: 1000;
-      transition: background-color var(--transition);
+      backdrop-filter: blur(12px);
+      animation: slideDown 0.8s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-100%); }
+      to { transform: translateY(0); }
     }
 
     nav a {
       font-weight: 600;
-      font-size: 0.9rem;
-      letter-spacing: 1.2px;
+      font-size: 1.1rem;
+      letter-spacing: 2px;
       color: var(--text);
-      padding: 0.5rem 0;
-      border-bottom: 2px solid transparent;
+      padding: 0.6rem 0;
       position: relative;
+      text-transform: uppercase;
       transition: all var(--transition);
     }
 
@@ -78,86 +105,118 @@
       content: '';
       position: absolute;
       width: 0;
-      height: 2px;
-      bottom: -2px;
-      left: 0;
-      background-color: var(--primary);
-      transition: width var(--transition);
+      height: 4px;
+      bottom: -6px;
+      left: 50%;
+      background: var(--gradient);
+      transition: all var(--transition);
+      transform: translateX(-50%);
     }
 
     nav a:hover::after,
     nav a.active::after {
-      width: 100%;
+      width: 80%;
     }
 
-    nav a.active,
-    nav a:hover {
+    nav a:hover,
+    nav a.active {
       color: var(--primary);
+      transform: scale(1.1);
     }
 
     .theme-toggle {
       background: none;
       border: none;
       cursor: pointer;
-      font-size: 1.2rem;
+      font-size: 1.6rem;
       color: var(--text);
-      transition: color var(--transition);
+      transition: all var(--transition);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.2) rotate(360deg);
     }
 
     section {
-      max-width: 800px;
-      margin: 100px auto 80px;
-      padding: 0 1.5rem;
+      max-width: 1000px;
+      margin: 140px auto 120px;
+      padding: 0 2.5rem;
       opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      transform: translateY(80px);
+      animation: fadeInUp 1s ease-out forwards;
     }
 
-    section.visible {
-      opacity: 1;
-      transform: translateY(0);
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
+
+    section:nth-child(2) { animation-delay: 0.3s; }
+    section:nth-child(3) { animation-delay: 0.6s; }
+    section:nth-child(4) { animation-delay: 0.9s; }
 
     h1 {
-      font-size: 2.8rem;
-      margin-bottom: 1.2rem;
-      font-weight: 700;
-      background: linear-gradient(45deg, var(--primary), var(--text));
+      font-size: 3.8rem;
+      margin-bottom: 1.8rem;
+      font-weight: 900;
+      background: var(--gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
     h2 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      font-weight: 600;
+      font-size: 2.8rem;
+      margin-bottom: 1.5rem;
+      font-weight: 800;
       position: relative;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     h2::after {
       content: '';
       display: block;
-      width: 50px;
-      height: 3px;
-      background: var(--primary);
-      margin-top: 0.5rem;
+      width: 80px;
+      height: 5px;
+      background: var(--gradient);
+      margin-top: 1rem;
       transition: width var(--transition);
+      animation: slideIn 0.7s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { width: 0; }
+      to { width: 80px; }
     }
 
     section:hover h2::after {
-      width: 100px;
+      width: 150px;
     }
 
     #intro p {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       color: var(--text);
-      opacity: 0.85;
-      max-width: 600px;
+      opacity: 0.95;
+      max-width: 700px;
+      background: var(--card-bg);
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px var(--shadow);
+      animation: fadeIn 1.2s ease-out 0.4s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 0.95; transform: translateY(0); }
     }
 
     .social {
-      margin-top: 2rem;
+      margin-top: 3rem;
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
@@ -171,12 +230,13 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      border: 2px solid var(--shadow);
+      border: 2px solid var(--primary);
       color: var(--text);
       font-size: 1.4rem;
       transition: all var(--transition);
       position: relative;
       overflow: hidden;
+      box-shadow: 0 4px 12px var(--shadow);
     }
 
     .social a::before {
@@ -186,22 +246,22 @@
       left: 50%;
       width: 0;
       height: 0;
-      background: var(--primary);
+      background: var(--gradient);
       border-radius: 50%;
       transform: translate(-50%, -50%);
-      transition: width 0.4s ease, height 0.4s ease;
+      transition: width 0.6s ease, height 0.6s ease;
       z-index: 0;
     }
 
     .social a:hover::before {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
     }
 
     .social a:hover {
       color: #fff;
-      transform: translateY(-4px);
-      box-shadow: 0 4px 12px var(--shadow);
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 8px 20px var(--shadow);
     }
 
     .social svg {
@@ -210,24 +270,46 @@
       fill: currentColor;
       position: relative;
       z-index: 1;
+      transition: transform 0.4s ease;
+    }
+
+    .social a:hover svg {
+      transform: rotate(360deg);
     }
 
     .projects {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 3rem;
+      margin-top: 2.5rem;
     }
 
     .project-card {
       background: var(--card-bg);
-      border: 1px solid var(--shadow);
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px var(--shadow);
+      border: 2px solid var(--shadow);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px var(--shadow);
       transition: all var(--transition);
       position: relative;
       overflow: hidden;
+      animation: cardPop 0.8s ease-out forwards;
     }
+
+    @keyframes cardPop {
+      0% {
+        transform: scale(0.85) rotate(-2deg);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    .project-card:nth-child(1) { animation-delay: 0.3s; }
+    .project-card:nth-child(2) { animation-delay: 0.6s; }
+    .project-card:nth-child(3) { animation-delay: 0.9s; }
 
     .project-card::before {
       content: '';
@@ -235,8 +317,8 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), transparent);
+      height: 8px;
+      background: var(--gradient);
       opacity: 0;
       transition: opacity var(--transition);
     }
@@ -246,50 +328,88 @@
     }
 
     .project-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 24px var(--shadow);
+      transform: translateY(-15px) scale(1.05);
+      box-shadow: 0 12px 32px var(--shadow);
       border-color: var(--primary);
     }
 
     .project-card h3 {
-      margin-bottom: 0.8rem;
+      margin-bottom: 1.2rem;
       color: var(--primary);
-      font-size: 1.3rem;
+      font-size: 1.7rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .project-card p {
       color: var(--text);
-      opacity: 0.8;
+      opacity: 0.9;
+      font-size: 1.2rem;
     }
 
     footer {
       text-align: center;
-      padding: 3rem 0;
-      font-size: 0.9rem;
+      padding: 5rem 0;
+      font-size: 1.1rem;
       color: var(--text);
-      opacity: 0.7;
-      border-top: 1px solid var(--shadow);
-      transition: color var(--transition);
+      opacity: 0.85;
+      border-top: 2px solid var(--shadow);
+      transition: all var(--transition);
+      position: relative;
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--gradient);
+      transform: translateX(-50%);
+      transition: width 0.8s ease;
+    }
+
+    footer:hover::before {
+      width: 300px;
     }
 
     @media (max-width: 600px) {
       nav {
-        gap: 0.8rem;
+        gap: 1.2rem;
         padding: 1rem;
         flex-wrap: wrap;
       }
 
       h1 {
-        font-size: 2rem;
+        font-size: 2.8rem;
       }
 
       h2 {
-        font-size: 1.6rem;
+        font-size: 2rem;
       }
 
       section {
-        margin: 80px auto 60px;
-        padding: 0 1rem;
+        margin: 120px auto 100px;
+        padding: 0 1.8rem;
+      }
+
+      .projects {
+        grid-template-columns: 1fr;
+      }
+
+      .social a {
+        width: 40px;
+        height: 40px;
+      }
+
+      .social svg {
+        width: 20px;
+        height: 20px;
       }
     }
   </style>
@@ -307,7 +427,7 @@
     </button>
   </nav>
 
-  <section id="intro" class="visible">
+  <section id="intro">
     <h1>Hello, I'm Muhammed Aslam</h1>
     <p>A Network Professional with proven experience in designing, implementing, and securing robust network infrastructure.</p>
     <div class="social">
@@ -351,7 +471,7 @@
 
   <section id="contact">
     <h2>Contact</h2>
-    <p>Email: <a href="mailto:contactme@azly.net">contactme@azly.net</a></p>
+    <p>Email: contactme@azly.net</p>
     <div class="social">
       <a href="#" aria-label="LinkedIn">
         <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4v12h-4V8zM8 8h3.6v1.68h.05c.5-.94 1.7-1.94 3.5-1.94 3.75 0 4.5 2.47 4.5 5.68V20h-4v-6c0-1.44-.03-3.3-2-3.3-2 0-2.3 1.57-2.3 3.2V20H8V8z"/></svg>
@@ -376,17 +496,9 @@
 
     function activateLink() {
       let index = sections.length;
-      while (--index && window.scrollY + 120 < sections[index].offsetTop) {}
+      while (--index && window.scrollY + 150 < sections[index].offsetTop) {}
       navLinks.forEach(link => link.classList.remove("active"));
       navLinks[index].classList.add("active");
-    }
-
-    function revealSections() {
-      sections.forEach(section => {
-        const top = section.getBoundingClientRect().top;
-        const trigger = window.innerHeight * 0.85;
-        if (top < trigger) section.classList.add("visible");
-      });
     }
 
     function toggleTheme() {
@@ -397,18 +509,12 @@
 
     themeToggle.addEventListener("click", toggleTheme);
 
-    // Load saved theme
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       document.documentElement.setAttribute("data-theme", savedTheme);
     }
 
-    window.addEventListener("scroll", () => {
-      activateLink();
-      revealSections();
-    });
-
-    window.addEventListener("load", revealSections);
+    window.addEventListener("scroll", activateLink);
   </script>
 </body>
 </html>
