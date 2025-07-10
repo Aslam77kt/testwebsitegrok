@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Muhammed Aslam — Portfolio</title>
+  <style>
+    :root {
+      --primary: #0077cc;
+      --text: #111;
+      --background: #f5f7fa;
+      --card-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --transition: 0.3s ease;
+    }
+
+    [data-theme="dark"] {
+      --primary: #66b3ff;
+      --text: #e0e0e0;
+      --background: #1a1a1a;
+      --card-bg: #2a2a2a;
+      --shadow: rgba(255, 255, 255, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      transition: background-color var(--transition), color var(--transition);
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    a:hover {
+      color: #005fa3;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--card-bg);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      box-shadow: 0 2px 5px var(--shadow);
+      z-index: 1000;
+      transition: background-color var(--transition);
+    }
+
+    nav a {
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 1.2px;
+      color: var(--text);
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      position: relative;
+      transition: all var(--transition);
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--primary);
+      transition: width var(--transition);
+    }
+
+    nav a:hover::after,
+    nav a.active::after {
+      width: 100%;
+    }
+
+    nav a.active,
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: var(--text);
+      transition: color var(--transition);
+    }
+
+    section {
+      max-width: 800px;
+      margin: 100px auto 80px;
+      padding: 0 1.5rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, var(--primary), var(--text));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 600;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 3px;
+      background: var(--primary);
+      margin-top: 0.5rem;
+      transition: width var(--transition);
+    }
+
+    section:hover h2::after {
+      width: 100px;
+    }
+
+    #intro p {
+      font-size: 1.1rem;
+      color: var(--text);
+      opacity: 0.85;
+      max-width: 600px;
+    }
+
+    .social {
+      margin-top: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .social a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid var(--shadow);
+      color: var(--text);
+      font-size: 1.4rem;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .social a::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: var(--primary);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s ease, height 0.4s ease;
+      z-index: 0;
+    }
+
+    .social a:hover::before {
+      width: 100px;
+      height: 100px;
+    }
+
+    .social a:hover {
+      color: #fff;
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px var(--shadow);
+    }
+
+    .social svg {
+      width: 24px;
+      height: 24px;
+      fill: currentColor;
+      position: relative;
+      z-index: 1;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--shadow);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px var(--shadow);
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+    }
+
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 24px var(--shadow);
+      border-color: var(--primary);
+    }
+
+    .project-card h3 {
+      margin-bottom: 0.8rem;
+      color: var(--primary);
+      font-size: 1.3rem;
+    }
+
+    .project-card p {
+      color: var(--text);
+      opacity: 0.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 0;
+      font-size: 0.9rem;
+      color: var(--text);
+      opacity: 0.7;
+      border-top: 1px solid var(--shadow);
+      transition: color var(--transition);
+    }
+
+    @media (max-width: 600px) {
+      nav {
+        gap: 0.8rem;
+        padding: 1rem;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+      }
+
+      section {
+        margin: 80px auto 60px;
+        padding: 0 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="#intro" class="active">01. Intro</a>
+    <a href="#about">02. About</a>
+    <a href="#projects">03. Projects</a>
+    <a href="#contact">04. Contact</a>
+    <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path fill="currentColor" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 5a7 7 0 100 14 7 7 0 000-14z"/>
+      </svg>
+    </button>
+  </nav>
+
+  <section id="intro" class="visible">
+    <h1>Hello, I'm Muhammed Aslam</h1>
+    <p>A Network Professional with proven experience in designing, implementing, and securing robust network infrastructure.</p>
+    <div class="social">
+      <a href="#" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4v12h-4V8zM8 8h3.6v1.68h.05c.5-.94 1.7-1.94 3.5-1.94 3.75 0 4.5 2.47 4.5 5.68V20h-4v-6c0-1.44-.03-3.3-2-3.3-2 0-2.3 1.57-2.3 3.2V20H8V8z"/></svg>
+      </a>
+      <a href="#" aria-label="Twitter">
+        <svg viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.949.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.723 0-4.928 2.206-4.928 4.928 0 .39.045.765.127 1.124-4.094-.205-7.725-2.165-10.158-5.144-.424.725-.666 1.562-.666 2.457 0 1.695.863 3.192 2.178 4.069-.803-.026-1.56-.246-2.22-.616v.062c0 2.37 1.684 4.348 3.918 4.794-.41.11-.843.17-1.287.17-.315 0-.624-.03-.927-.086.625 1.951 2.444 3.375 4.6 3.414-1.68 1.318-3.809 2.105-6.102 2.105-.396 0-.787-.023-1.175-.068 2.179 1.394 4.768 2.208 7.557 2.208 9.054 0 14.002-7.496 14.002-13.986 0-.21-.006-.423-.015-.633.962-.695 1.8-1.562 2.46-2.549z"/></svg>
+      </a>
+      <a href="mailto:contactme@azly.net" aria-label="Email">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </a>
+      <a href="#" aria-label="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.09.682-.217.682-.482v-1.69c-2.782.604-3.369-1.34-3.369-1.34-.454-1.154-1.108-1.462-1.108-1.462-.906-.621.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.528 2.341 1.087 2.91.831.09-.645.347-1.087.632-1.337-2.22-.252-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.647 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.377.203 2.394.1 2.647.64.698 1.026 1.591 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852v2.742c0 .267.182.577.687.482A10.002 10.002 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>7 Years Experienced Network Security Engineer, Possessing robust skill set in network engineering, network security, server administration, and cloud networking.</p>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects">
+      <div class="project-card">
+        <h3>Project One</h3>
+        <p>Coming soon...</p>
+      </div>
+      <div class="project-card">
+        <h3>Project Two</h3>
+        <p>Coming soon...</p>
+      </div>
+      <div class="project-card">
+        <h3>Project Three</h3>
+        <p>Coming soon...</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:contactme@azly.net">contactme@azly.net</a></p>
+    <div class="social">
+      <a href="#" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4v12h-4V8zM8 8h3.6v1.68h.05c.5-.94 1.7-1.94 3.5-1.94 3.75 0 4.5 2.47 4.5 5.68V20h-4v-6c0-1.44-.03-3.3-2-3.3-2 0-2.3 1.57-2.3 3.2V20H8V8z"/></svg>
+      </a>
+      <a href="#" aria-label="Twitter">
+        <svg viewBox="0 0 24 24"><path d="M23.954 4.569c-.885.392-1.83.656-2.825.775 1.014-.611 1.794-1.574 2.163-2.724-.949.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-2.723 0-4.928 2.206-4.928 4.928 0 .39.045.765.127 1.124-4.094-.205-7.725-2.165-10.158-5.144-.424.725-.666 1.562-.666 2.457 0 1.695.863 3.192 2.178 4.069-.803-.026-1.56-.246-2.22-.616v.062c0 2.37 1.684 4.348 3.918 4.794-.41.11-.843.17-1.287.17-.315 0-.624-.03-.927-.086.625 1.951 2.444 3.375 4.6 3.414-1.68 1.318-3.809 2.105-6.102 2.105-.396 0-.787-.023-1.175-.068 2.179 1.394 4.768 2.208 7.557 2.208 9.054 0 14.002-7.496 14.002-13.986 0-.21-.006-.423-.015-.633.962-.695 1.8-1.562 2.46-2.549z"/></svg>
+      </a>
+      <a href="#" aria-label="GitHub">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.09.682-.217.682-.482v-1.69c-2.782.604-3.369-1.34-3.369-1.34-.454-1.154-1.108-1.462-1.108-1.462-.906-.621.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.528 2.341 1.087 2.91.831.09-.645.347-1.087.632-1.337-2.22-.252-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.446-1.27.098-2.647 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.546 1.377.203 2.394.1 2.647.64.698 1.026 1.591 1.026 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852v2.742c0 .267.182.577.687.482A10.002 10.002 0 0022 12c0-5.523-4.477-10-10-10z"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    © 2025 Muhammed Aslam. Built with ❤️.
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll("section");
+    const navLinks = document.querySelectorAll("nav a");
+    const themeToggle = document.querySelector(".theme-toggle");
+
+    function activateLink() {
+      let index = sections.length;
+      while (--index && window.scrollY + 120 < sections[index].offsetTop) {}
+      navLinks.forEach(link => link.classList.remove("active"));
+      navLinks[index].classList.add("active");
+    }
+
+    function revealSections() {
+      sections.forEach(section => {
+        const top = section.getBoundingClientRect().top;
+        const trigger = window.innerHeight * 0.85;
+        if (top < trigger) section.classList.add("visible");
+      });
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute("data-theme") || "light";
+      document.documentElement.setAttribute("data-theme", currentTheme === "light" ? "dark" : "light");
+      localStorage.setItem("theme", currentTheme === "light" ? "dark" : "light");
+    }
+
+    themeToggle.addEventListener("click", toggleTheme);
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      document.documentElement.setAttribute("data-theme", savedTheme);
+    }
+
+    window.addEventListener("scroll", () => {
+      activateLink();
+      revealSections();
+    });
+
+    window.addEventListener("load", revealSections);
+  </script>
+</body>
+</html>
